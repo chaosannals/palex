@@ -1,6 +1,7 @@
 <?php namespace palex\crypt;
 
 /**
+ * RSA Public Key
  * 
  */
 final class RSAPublicKey {
@@ -8,13 +9,16 @@ final class RSAPublicKey {
 
     /**
      * 
+     * @param mixed $raw:
      */
     public function __construct($raw) {
         $this->key = openssl_pkey_get_public($raw);
     }
 
     /**
+     * encrypt by key.
      * 
+     * @param string... $data: encrypt data reference.
      */
     public function encrypt(&...$data) {
         foreach ($data as &$target) {
@@ -24,7 +28,9 @@ final class RSAPublicKey {
     }
 
     /**
+     * encrypt by key.
      * 
+     * @param string... $data: decrypt data reference.
      */
     public function decrypt(&...$data) {
         foreach ($data as &$target) {

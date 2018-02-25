@@ -1,6 +1,7 @@
 <?php namespace palex\crypt;
 
 /**
+ * RSA Private Key
  * 
  */
 final class RSAPrivateKey {
@@ -8,6 +9,7 @@ final class RSAPrivateKey {
 
     /**
      * 
+     * @param mixed $raw:
      */
     public function __construct($raw) {
         if (is_string($raw)) {
@@ -21,6 +23,8 @@ final class RSAPrivateKey {
 
     /**
      * 
+     * @param string[option] $path: save path.
+     * @return string: private key.
      */
     public function export($path=null) {
         openssl_pkey_export($this->key, $result);
@@ -30,6 +34,7 @@ final class RSAPrivateKey {
 
     /**
      * 
+     * @return object: RSAPublicKey.
      */
     public function getPublicKey() {
         $details = openssl_pkey_get_details($this->key);
@@ -37,7 +42,9 @@ final class RSAPrivateKey {
     }
 
     /**
+     * encrypt by key.
      * 
+     * @param string... $data: encrypt data reference.
      */
     public function encrypt(&...$data) {
         foreach ($data as &$target) {
@@ -47,7 +54,9 @@ final class RSAPrivateKey {
     }
 
     /**
+     * decrypt by key.
      * 
+     * @param string... $data: decrypt data reference.
      */
     public function decrypt(&...$data) {
         foreach ($data as &$target) {
