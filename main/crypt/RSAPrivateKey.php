@@ -4,7 +4,7 @@
  * RSA Private Key
  * 
  */
-final class RSAPrivateKey {
+final class RsaPrivateKey {
     private $key;
 
     /**
@@ -34,11 +34,11 @@ final class RSAPrivateKey {
 
     /**
      * 
-     * @return object: RSAPublicKey.
+     * @return object: RsaPublicKey.
      */
     public function getPublicKey() {
         $details = openssl_pkey_get_details($this->key);
-        return new RSAPublicKey($details['key']);
+        return new RsaPublicKey($details['key']);
     }
 
     /**

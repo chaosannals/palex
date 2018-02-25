@@ -4,7 +4,7 @@
  * RSA Public Key
  * 
  */
-final class RSAPublicKey {
+final class RsaPublicKey {
     private $key;
 
     /**

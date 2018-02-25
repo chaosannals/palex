@@ -1,14 +1,14 @@
 <?php namespace test\crypt;
 
 use PHPUnit\Framework\TestCase;
-use palex\crypt\RSAPublicKey;
-use palex\crypt\RSAPrivateKey;
+use palex\crypt\RsaPublicKey;
+use palex\crypt\RsaPrivateKey;
 
 /**
- * test RSAPrivateKey and RSAPublicKey.
+ * test RsaPrivateKey and RsaPublicKey.
  * 
  */
-final class RSAKeyTest extends TestCase {
+final class RsaKeyTest extends TestCase {
     /**
      * 
      * @dataProvider provideKeys
@@ -37,8 +37,8 @@ final class RSAKeyTest extends TestCase {
      * 
      */
     public function provideKeys() {
-        $one = new RSAPrivateKey(['private_key_bits' => 2048]);
-        $two = new RSAPrivateKey(2048);
+        $one = new RsaPrivateKey(['private_key_bits' => 2048]);
+        $two = new RsaPrivateKey(2048);
         return [
             'new key one' => [
                 $one,
