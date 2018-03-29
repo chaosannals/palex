@@ -17,6 +17,7 @@ final class Dictionary {
     }
 
     /**
+     * if contains return true.
      * 
      * @param string $path: key.
      * @return bool: has value.
