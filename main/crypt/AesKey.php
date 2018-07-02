@@ -50,6 +50,7 @@ final class AesKey {
      * @return string: encrypt result.
      */
     public function encrypt($data) {
+        if (is_array($data)) return array_map([$this, __FUNCTION__], $data);
         $raw = openssl_encrypt($data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv);
         return base64_encode($raw);
     }
@@ -60,6 +61,7 @@ final class AesKey {
      * @return string: decrypt result.
      */
     public function decrypt($data) {
+        if (is_array($data)) return array_map([$this, __FUNCTION__], $data);
         $raw = base64_decode($data);
         return openssl_decrypt($raw, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv);
     }

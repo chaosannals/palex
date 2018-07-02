@@ -45,7 +45,7 @@ final class Filesystem {
      * 
      * @param string $source: source path.
      * @param string $target: target path.
-     * @param bool: completed return true.
+     * @return bool: completed return true.
      */
     public function copy($source, $target) {
         // using mark.
@@ -71,7 +71,7 @@ final class Filesystem {
      * remove file or directory.
      * 
      * @param string $path: path.
-     * @param bool: completed return true.
+     * @return bool: completed return true.
      */
     public function remove($path) {
         // using mark.

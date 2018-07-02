@@ -14,11 +14,10 @@ final class RsaKeyTest extends TestCase {
      * @dataProvider provideKeys
      */
     public function testPrivateEncryptAndPublicDecrypt($privateKey, $publicKey, $data) {
-        $origin = $data;
-        $privateKey->encrypt($data);
-        $this->assertNotEquals($origin, $data);
-        $publicKey->decrypt($data);
-        $this->assertEquals($origin, $data);
+        $encrypted = $privateKey->encrypt($data);
+        $this->assertNotEquals($encrypted, $data);
+        $decrypted = $publicKey->decrypt($encrypted);
+        $this->assertEquals($decrypted, $data);
     }
 
     /**
@@ -26,11 +25,10 @@ final class RsaKeyTest extends TestCase {
      * @dataProvider provideKeys
      */
     public function testPublicEncryptAndPrivateDecrypt($privateKey, $publicKey, $data) {
-        $origin = $data;
-        $publicKey->encrypt($data);
-        $this->assertNotEquals($origin, $data);
-        $privateKey->decrypt($data);
-        $this->assertEquals($origin, $data);
+        $encrypted = $publicKey->encrypt($data);
+        $this->assertNotEquals($encrypted, $data);
+        $decrypted = $privateKey->decrypt($encrypted);
+        $this->assertEquals($decrypted, $data);
     }
 
     /**

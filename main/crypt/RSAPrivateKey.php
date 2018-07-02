@@ -16,8 +16,14 @@ final class RsaPrivateKey {
             if (is_file($raw)) $raw = file_get_contents($raw);
             $this->key = openssl_pkey_get_private($raw);
         } else {
-            if (is_int($raw)) $raw = ['private_key_bits' => $raw];
-            $this->key = openssl_pkey_new($raw);
+            $options = [
+                'private_key_bits' => is_int($raw) ? $raw : 4096,
+                'private_key_type' => OPENSSL_KEYTYPE_RSA,
+            ];
+            if (false !== stripos(PHP_OS, 'WIN')) {
+                $options['config'] = dirname(PHP_BINARY).'\extras\ssl\openssl.cnf';
+            }
+            $this->key = openssl_pkey_new($options);
         }
     }
 
@@ -44,24 +50,23 @@ final class RsaPrivateKey {
     /**
      * encrypt by key.
      * 
-     * @param string... $data: encrypt data reference.
+     * @param string|array $data: encrypt data reference.
      */
-    public function encrypt(&...$data) {
-        foreach ($data as &$target) {
-            openssl_private_encrypt($target, $crypted, $this->key);
-            $target = base64_encode($crypted);
-        }
+    public function encrypt($data) {
+        if (is_array($data)) return array_map([$this, __FUNCTION__], $data);
+        openssl_private_encrypt($data, $result, $this->key);
+        return base64_encode($result);
     }
 
     /**
      * decrypt by key.
      * 
-     * @param string... $data: decrypt data reference.
+     * @param string|array $data: decrypt data reference.
      */
-    public function decrypt(&...$data) {
-        foreach ($data as &$target) {
-            $raw = base64_decode($target);
-            openssl_private_decrypt($raw, $target, $this->key);
-        }
+    public function decrypt($data) {
+        if (is_array($data)) return array_map([$this, __FUNCTION__], $data);
+        $raw = base64_decode($data);
+        openssl_private_decrypt($raw, $result, $this->key);
+        return $result;
     }
 }

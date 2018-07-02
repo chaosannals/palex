@@ -18,24 +18,23 @@ final class RsaPublicKey {
     /**
      * encrypt by key.
      * 
-     * @param string... $data: encrypt data reference.
+     * @param string|array $data: encrypt data reference.
      */
-    public function encrypt(&...$data) {
-        foreach ($data as &$target) {
-            openssl_public_encrypt($target, $crypted, $this->key);
-            $target = base64_encode($crypted);
-        }
+    public function encrypt($data) {
+        if (is_array($data)) return array_map([$this, __FUNCTION__], $data);
+        openssl_public_encrypt($data, $result, $this->key);
+        return base64_encode($result);
     }
 
     /**
      * encrypt by key.
      * 
-     * @param string... $data: decrypt data reference.
+     * @param string|array $data: decrypt data reference.
      */
-    public function decrypt(&...$data) {
-        foreach ($data as &$target) {
-            $raw = base64_decode($target);
-            openssl_public_decrypt($raw, $target, $this->key);
-        }
+    public function decrypt($data) {
+        if (is_array($data)) return array_map([$this, __FUNCTION__], $data);
+        $raw = base64_decode($data);
+        openssl_public_decrypt($raw, $result, $this->key);
+        return $result;
     }
 }
