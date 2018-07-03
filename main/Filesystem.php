@@ -31,6 +31,17 @@ final class Filesystem {
     }
 
     /**
+     * uniform separator and get the path.
+     * 
+     * @param string $path: raw path.
+     * @return string: path.
+     */
+    public function as($path) {
+        $location = preg_split('/[\/\\]+/', $path);
+        return $this->at(...$location);
+    }
+
+    /**
      * mark path.
      * 
      * @param string $mark: mark must start '@'
@@ -49,13 +60,13 @@ final class Filesystem {
      */
     public function copy($source, $target) {
         // using mark.
-        if ('@' == $source[0]) $source = $this->marks[$source];
-        if ('@' == $target[0]) $target = $this->marks[$target];
+        if ('@' == $source[0]) $source = $this->as($source);
+        if ('@' == $target[0]) $target = $this->as($target);
 
-        // copy file
+        // copy file.
         if (is_file($source)) return copy($source, $target);
 
-        // copy directory
+        // copy directory.
         $handle = opendir($source);
         while (false !== ($name = readdir($handle))) {
             if ('.' == $name or '..' == $name) continue;
@@ -75,7 +86,7 @@ final class Filesystem {
      */
     public function remove($path) {
         // using mark.
-        if ('@' == $path[0]) $path = $this->marks[$path];
+        if ('@' == $path[0]) $path = $this->as($path);
         
         // remove file.
         if (is_file($path)) return unlink($path);
