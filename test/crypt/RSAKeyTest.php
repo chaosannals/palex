@@ -33,6 +33,15 @@ final class RsaKeyTest extends TestCase {
 
     /**
      * 
+     * @dataProvider provideKeys
+     */
+    public function testExport($privateKey, $publicKey, $data) {
+        $key = $privateKey->export();
+        $this->assertNotNull($key);
+    }
+
+    /**
+     * 
      */
     public function provideKeys() {
         $one = new RsaPrivateKey(['private_key_bits' => 2048]);

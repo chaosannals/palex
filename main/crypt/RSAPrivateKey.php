@@ -6,6 +6,7 @@
  */
 final class RsaPrivateKey {
     private $key;
+    private $configuration;
 
     /**
      * 
@@ -16,14 +17,14 @@ final class RsaPrivateKey {
             if (is_file($raw)) $raw = file_get_contents($raw);
             $this->key = openssl_pkey_get_private($raw);
         } else {
-            $options = [
+            $this->configuration = [
                 'private_key_bits' => is_int($raw) ? $raw : 4096,
                 'private_key_type' => OPENSSL_KEYTYPE_RSA,
             ];
             if (false !== stripos(PHP_OS, 'WIN')) {
-                $options['config'] = dirname(PHP_BINARY).'\extras\ssl\openssl.cnf';
+                $this->configuration['config'] = dirname(PHP_BINARY).'\extras\ssl\openssl.cnf';
             }
-            $this->key = openssl_pkey_new($options);
+            $this->key = openssl_pkey_new($this->configuration);
         }
     }
 
@@ -33,8 +34,8 @@ final class RsaPrivateKey {
      * @return string: private key.
      */
     public function export($path=null) {
-        openssl_pkey_export($this->key, $result);
-        if (isset($path)) openssl_pkey_export_to_file($this->key, $path);
+        openssl_pkey_export($this->key, $result, null, $this->configuration);
+        if (isset($path)) openssl_pkey_export_to_file($this->key, $path, null, $configuration);
         return $result;
     }
 
