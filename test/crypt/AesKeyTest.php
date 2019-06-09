@@ -1,4 +1,4 @@
-<?php namespace test;
+<?php namespace test\crypt;
 
 use PHPUnit\Framework\TestCase;
 use palex\crypt\AesKey;
